@@ -1,14 +1,15 @@
 import React, {useState} from "react";
 import {StyleSheet, Text, TextInput, View} from "react-native";
 import axios from "axios";
+import CustomButton from "../../components/CustomButton";
 
 const HomeScreen = ({navigation}) => {
+  const genreUrl = 'https://api.themoviedb.org/3/genre/movie/list?api_key=faaba85728afe12fc19258764ebfc04d';
   const apiurl = 'https://api.themoviedb.org/3/search/movie?api_key=faaba85728afe12fc19258764ebfc04d';
-  const genreSearchUrl = 'https://api.themoviedb.org/3/discover/movie?api_key=faaba85728afe12fc19258764ebfc04d';
   const actorSearchUrl = 'https://api.themoviedb.org/3/search/person?api_key=faaba85728afe12fc19258764ebfc04d'
   const [state, setState] = useState({
     s: "Enter a movie title",
-    genre: 'Enter genre',
+    genre: 'Search by genre',
     actor: 'Enter name of the actor',
   });
 
@@ -22,9 +23,9 @@ const HomeScreen = ({navigation}) => {
   }
 
   const searchGenre = () => {
-    axios(genreSearchUrl + '&with_genres=' + state.genre).then(({data}) => {
-      let results = data.results;
-      navigation.navigate('MovieList', {
+    axios(genreUrl).then(({data}) => {
+      let results = data.genres;
+      navigation.navigate('GenreList', {
         results: results,
       });
     })
@@ -53,18 +54,14 @@ const HomeScreen = ({navigation}) => {
       <TextInput
         style={styles.searchbox}
         onChangeText={text => setState((prevState => {
-          return {...prevState, genre: text}
-        }))}
-        onSubmitEditing={searchGenre}
-        value={state.genre}
-      />
-      <TextInput
-        style={styles.searchbox}
-        onChangeText={text => setState((prevState => {
           return {...prevState, actor: text}
         }))}
         onSubmitEditing={searchActor}
         value={state.actor}
+      />
+      <CustomButton
+        text={state.genre}
+        onPress={searchGenre}
       />
     </View>
   )
