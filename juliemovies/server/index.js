@@ -1,6 +1,8 @@
 const express = require('express');
 const cors = require('cors');
 const knex = require('knex');
+const bcrypt = require("bcrypt")
+
 require('dotenv').config();
 const db = knex({
   client: 'pg',
@@ -12,6 +14,7 @@ const db = knex({
   },
 });
 const app = express();
+
 app.use(express.urlencoded({extended: false}));
 app.use(express.json());
 
@@ -55,36 +58,44 @@ app.get('/get-favorites/:userId', (req, res) => {
 app.get('/:username/:password', (req, res) => {
   const username = req.params.username;
   const pw = req.params.password;
-  db.select('*')
-    .from('users')
-    .where('username', '=', username).where('password', '=', pw)
-    .then((data) => {
-      console.log(data);
-      res.json(data);
-    })
-    .catch((err) => {
-      console.log(err);
+  db.select('salt').from('users').where('username', '=', username).first().then((data) => {
+    bcrypt.hash(pw, data.salt, function (err, hash) {
+      db.select('*')
+        .from('users')
+        .where('username', '=', username).where('password', '=', hash)
+        .then((data) => {
+          res.json(data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     });
+  })
 });
 
 // POST: Create users and add them to the databaseapp.post('/add-user', (req, res) => {
 app.post('/add-user', (req, res) => {
   const {username, password} = req.body;
-  db('users')
-    .insert({
-      username: username,
-      password: password,
-    })
-    .then(() => {
-      console.log('User Added');
-      return res.json({msg: 'User Added'});
-    })
-    .catch((err) => {
-      console.log(err);
-      return res.status(400).send({
-        msg: err
-      })
+  bcrypt.genSalt(10, (err, salt) => {
+    bcrypt.hash(password, salt, function (err, hash) {
+      db('users')
+        .insert({
+          username: username,
+          password: hash,
+          salt: salt
+        })
+        .then(() => {
+          console.log('User Added');
+          return res.json({msg: 'User Added'});
+        })
+        .catch((err) => {
+          console.log(err);
+          return res.status(400).send({
+            msg: err
+          })
+        });
     });
+  })
 });
 
 app.post('/add-favorite', (req, res) => {

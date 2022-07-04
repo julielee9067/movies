@@ -2,7 +2,8 @@ CREATE TABLE users
 (
     id       SERIAL PRIMARY KEY,
     username VARCHAR NOT NULL,
-    password VARCHAR NOT NULL
+    password VARCHAR NOT NULL,
+    salt     VARCHAR NOT NULL
 );
 
 CREATE TABLE user_movies
