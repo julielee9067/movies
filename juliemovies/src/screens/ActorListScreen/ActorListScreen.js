@@ -1,10 +1,11 @@
-import React from "react";
+import React, {useState} from "react";
 import {ScrollView, StyleSheet, Text, TouchableHighlight, View} from "react-native";
-import {useNavigation} from "@react-navigation/native";
 import axios from "axios";
 
-const ActorListScreen = () => {
-  const navigation = useNavigation();
+const ActorListScreen = ({navigation, route}) => {
+  const [state, setState] = useState({
+    selected: {}
+  });
 
   const openPopup = (id) => {
     axios('https://api.themoviedb.org/3/movie/' + id + '?api_key=faaba85728afe12fc19258764ebfc04d').then(({data}) => {
@@ -17,7 +18,7 @@ const ActorListScreen = () => {
 
   return (
     <ScrollView style={styles.results}>
-      {state.actorResults.map(result => {
+      {route.params.results.map(result => {
         return (
           <TouchableHighlight
             key={result.id}
@@ -34,21 +35,6 @@ const ActorListScreen = () => {
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#223343',
-    alignItems: 'center',
-    justifyContent: 'flex-start',
-    paddingTop: 70,
-    paddingHorizontal: 20
-  },
-  title: {
-    color: '#FFF',
-    fontSize: 32,
-    fontWeight: '700',
-    textAlign: 'center',
-    marginBottom: 20
-  },
   searchbox: {
     fontSize: 20,
     fontWeight: '300',

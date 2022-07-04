@@ -1,19 +1,11 @@
 import React, {useState} from "react";
 import {Image, Modal, ScrollView, StyleSheet, Text, TouchableHighlight, View} from "react-native";
-import {useNavigation} from "@react-navigation/native";
 import axios from "axios";
 
-const MovieListScreen = () => {
+const MovieListScreen = ({navigation, route}) => {
   const [state, setState] = useState({
-    s: "Enter a movie title",
-    genre: 'Enter genre',
-    actor: 'Enter name of the actor',
-    results: [],
-    actorResults: [],
     selected: {}
   });
-
-  const navigation = useNavigation();
 
   const openPopup = (id) => {
     axios('https://api.themoviedb.org/3/movie/' + id + '?api_key=faaba85728afe12fc19258764ebfc04d').then(({data}) => {
@@ -27,7 +19,7 @@ const MovieListScreen = () => {
   return (
     <View style={styles.container}>
       <ScrollView style={styles.results}>
-        {state.results.map(result => {
+        {route.params.results.map(result => {
           return (
             <TouchableHighlight
               key={result.id}
@@ -74,28 +66,11 @@ const MovieListScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#223343',
+    backgroundColor: '#5C6AC4',
     alignItems: 'center',
     justifyContent: 'flex-start',
     paddingTop: 70,
     paddingHorizontal: 20
-  },
-  title: {
-    color: '#FFF',
-    fontSize: 32,
-    fontWeight: '700',
-    textAlign: 'center',
-    marginBottom: 20
-  },
-  searchbox: {
-    fontSize: 20,
-    fontWeight: '300',
-    padding: 20,
-    width: '100%',
-    height: 25,
-    backgroundColor: '#FFF',
-    borderRadius: 8,
-    marginBottom: 20
   },
   result: {
     flex: 1,
@@ -106,7 +81,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: '700',
     padding: 20,
-    backgroundColor: '#445565'
+    backgroundColor: '#5C6AC4'
   },
   popup: {
     padding: 20,
@@ -122,7 +97,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     color: '#fff',
     fontWeight: '700',
-    backgroundColor: '#2484c4'
+    backgroundColor: '#5C6AC4'
   }
 });
 export default MovieListScreen;

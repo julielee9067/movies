@@ -2,7 +2,7 @@ import React, {useState} from "react";
 import {StyleSheet, Text, TextInput, View} from "react-native";
 import axios from "axios";
 
-const HomeScreen = () => {
+const HomeScreen = ({navigation}) => {
   const apiurl = 'https://api.themoviedb.org/3/search/movie?api_key=faaba85728afe12fc19258764ebfc04d';
   const genreSearchUrl = 'https://api.themoviedb.org/3/discover/movie?api_key=faaba85728afe12fc19258764ebfc04d';
   const actorSearchUrl = 'https://api.themoviedb.org/3/search/person?api_key=faaba85728afe12fc19258764ebfc04d'
@@ -10,35 +10,32 @@ const HomeScreen = () => {
     s: "Enter a movie title",
     genre: 'Enter genre',
     actor: 'Enter name of the actor',
-    results: [],
-    actorResults: [],
-    selected: {}
   });
 
   const search = () => {
     axios(apiurl + '&query=' + state.s).then(({data}) => {
       let results = data.results;
-      setState(prevState => {
-        return {...prevState, results: results}
-      })
+      navigation.navigate('MovieList', {
+        results: results,
+      });
     })
   }
 
   const searchGenre = () => {
     axios(genreSearchUrl + '&with_genres=' + state.genre).then(({data}) => {
       let results = data.results;
-      setState(prevState => {
-        return {...prevState, results: results}
-      })
+      navigation.navigate('MovieList', {
+        results: results,
+      });
     })
   }
 
   const searchActor = () => {
     axios(actorSearchUrl + '&query=' + state.actor).then(({data}) => {
       let results = data.results;
-      setState(prevState => {
-        return {...prevState, actorResults: results}
-      })
+      navigation.navigate('ActorList', {
+        results: results,
+      });
     })
   }
 
@@ -76,7 +73,7 @@ const HomeScreen = () => {
 const styles = StyleSheet.create({
     container: {
       flex: 1,
-      backgroundColor: '#223343',
+      backgroundColor: '#5C6AC4',
       alignItems: 'center',
       justifyContent: 'flex-start',
       paddingTop: 70,
@@ -94,7 +91,6 @@ const styles = StyleSheet.create({
       fontWeight: '300',
       padding: 20,
       width: '100%',
-      height: 25,
       backgroundColor: '#FFF',
       borderRadius: 8,
       marginBottom: 20
