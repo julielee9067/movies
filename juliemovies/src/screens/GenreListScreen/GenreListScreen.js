@@ -47,11 +47,11 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   heading: {
-    color: '#FFF',
+    color: '#5C6AC4',
     fontSize: 18,
     fontWeight: '700',
     padding: 20,
-    backgroundColor: '#445565'
+    backgroundColor: '#FFF'
   },
   popup: {
     padding: 20,

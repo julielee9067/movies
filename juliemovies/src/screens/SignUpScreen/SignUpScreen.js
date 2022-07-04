@@ -14,7 +14,6 @@ const SignUpScreen = () => {
   const signUpUrl = 'http://localhost:5000/add-user'
 
   const onRegisterPressed = async (data) => {
-    console.log(data);
     try {
       const response = await axios.post(signUpUrl, data);
       if (response.status === 200) {

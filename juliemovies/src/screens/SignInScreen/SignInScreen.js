@@ -6,7 +6,9 @@ import SocialSignInButtons from '../../components/SocialSignInButtons';
 import {useNavigation} from '@react-navigation/native';
 import {useForm} from 'react-hook-form';
 import CustomInput from '../../components/CustomInput';
+
 import axios from "axios";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const SignInScreen = () => {
   const {height} = useWindowDimensions();
@@ -19,12 +21,13 @@ const SignInScreen = () => {
   } = useForm();
 
   const onSignInPressed = async (data) => {
-    console.log(data);
     try {
       const response = await axios.get(`${userUrl}${data.username}/${data.password}/`);
-      console.log(response.data)
       if (response.status === 200 && response.data.length === 1) {
-        navigation.navigate('Home');
+        AsyncStorage.setItem('userId', `${response.data[0].id}`).then(r => {
+            navigation.navigate('Home');
+          }
+        );
       } else {
         throw new Error('Invalid username or password')
       }

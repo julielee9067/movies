@@ -1,12 +1,16 @@
 import React, {useState} from "react";
-import {StyleSheet, Text, TextInput, View} from "react-native";
+import {Image, StyleSheet, TextInput, View} from "react-native";
 import axios from "axios";
 import CustomButton from "../../components/CustomButton";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import Logo from "../../../assets/Logo.png";
 
 const HomeScreen = ({navigation}) => {
   const genreUrl = 'https://api.themoviedb.org/3/genre/movie/list?api_key=faaba85728afe12fc19258764ebfc04d';
   const apiurl = 'https://api.themoviedb.org/3/search/movie?api_key=faaba85728afe12fc19258764ebfc04d';
   const actorSearchUrl = 'https://api.themoviedb.org/3/search/person?api_key=faaba85728afe12fc19258764ebfc04d'
+  const favoriteUrl = 'http://localhost:5000/get-favorites/'
+  const multiSearchUrl = 'https://api.themoviedb.org/3/search/multi?api_key=faaba85728afe12fc19258764ebfc04d'
   const [state, setState] = useState({
     s: "Enter a movie title",
     genre: 'Search by genre',
@@ -40,9 +44,22 @@ const HomeScreen = ({navigation}) => {
     })
   }
 
+  const showFavorites = async () => {
+    const userId = await AsyncStorage.getItem('userId');
+    axios(favoriteUrl + userId).then(({data}) => {
+      navigation.navigate('FavoriteMovieList', {
+        results: data,
+      });
+    });
+  }
+
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Julie Movies</Text>
+      <Image
+        source={Logo}
+        style={styles.logo}
+        resizeMode="contain"
+      />
       <TextInput
         style={styles.searchbox}
         onChangeText={text => setState((prevState => {
@@ -63,6 +80,10 @@ const HomeScreen = ({navigation}) => {
         text={state.genre}
         onPress={searchGenre}
       />
+      <CustomButton
+        text='See favorite movies'
+        onPress={showFavorites}
+      />
     </View>
   )
 }
@@ -70,14 +91,14 @@ const HomeScreen = ({navigation}) => {
 const styles = StyleSheet.create({
     container: {
       flex: 1,
-      backgroundColor: '#5C6AC4',
+      backgroundColor: '#FFF',
       alignItems: 'center',
       justifyContent: 'flex-start',
       paddingTop: 70,
       paddingHorizontal: 20
     },
     title: {
-      color: '#FFF',
+      color: '#5C6AC4',
       fontSize: 32,
       fontWeight: '700',
       textAlign: 'center',
@@ -88,7 +109,7 @@ const styles = StyleSheet.create({
       fontWeight: '300',
       padding: 20,
       width: '100%',
-      backgroundColor: '#FFF',
+      backgroundColor: '#D3D3D3',
       borderRadius: 8,
       marginBottom: 20
     },

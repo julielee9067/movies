@@ -31,42 +31,16 @@ const ActorListScreen = ({navigation, route}) => {
 };
 
 const styles = StyleSheet.create({
-  searchbox: {
-    fontSize: 20,
-    fontWeight: '300',
-    padding: 20,
-    width: '100%',
-    height: 25,
-    backgroundColor: '#FFF',
-    borderRadius: 8,
-    marginBottom: 20
-  },
   result: {
     flex: 1,
     width: '100%',
   },
   heading: {
-    color: '#FFF',
+    color: '#5C6AC4',
     fontSize: 18,
     fontWeight: '700',
     padding: 20,
-    backgroundColor: '#445565'
+    backgroundColor: '#FFF'
   },
-  popup: {
-    padding: 20,
-    marginTop: 40
-  },
-  poptitle: {
-    fontSize: 24,
-    fontWeight: '700',
-    marginBottom: 5
-  },
-  closeBtn: {
-    padding: 20,
-    fontSize: 20,
-    color: '#fff',
-    fontWeight: '700',
-    backgroundColor: '#2484c4'
-  }
 });
 export default ActorListScreen;

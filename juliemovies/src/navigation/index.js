@@ -9,6 +9,7 @@ import HomeScreen from "../screens/HomeScreen";
 import MovieListScreen from "../screens/MovieListScreen";
 import ActorListScreen from "../screens/ActorListScreen";
 import GenreListScreen from "../screens/GenreListScreen";
+import FavoriteMovieListScreen from "../screens/FavoriteMovieListScreen";
 
 const Stack = createNativeStackNavigator();
 const Navigation = () => {
@@ -23,6 +24,7 @@ const Navigation = () => {
         <Stack.Screen name="MovieList" component={MovieListScreen} options={{headerShown: true}}/>
         <Stack.Screen name="ActorList" component={ActorListScreen} options={{headerShown: true}}/>
         <Stack.Screen name="GenreList" component={GenreListScreen} options={{headerShown: true}}/>
+        <Stack.Screen name="FavoriteMovieList" component={FavoriteMovieListScreen} options={{headerShown: true}}/>
       </Stack.Navigator>
     </NavigationContainer>
   );

@@ -7,14 +7,14 @@
  */
 
 import React from 'react';
-import {SafeAreaView, StyleSheet} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import Navigation from './src/navigation';
 
 const App: () => Node = () => {
   return (
-    <SafeAreaView style={styles.root}>
+    <View style={styles.root}>
       <Navigation/>
-    </SafeAreaView>
+    </View>
   );
 };
 

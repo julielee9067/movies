@@ -28,6 +28,26 @@ app.get('/', (req, res) => {
     })
     .catch((err) => {
       console.log(err);
+      return res.status(400).send({
+        msg: err
+      })
+    });
+});
+
+app.get('/get-favorites/:userId', (req, res) => {
+  const userId = req.params.userId;
+  db.select('movie_id', 'movie_title')
+    .from('user_movies')
+    .where('user_id', '=', userId)
+    .then((data) => {
+      console.log(data);
+      res.json(data);
+    })
+    .catch((err) => {
+      console.log(err);
+      return res.status(400).send({
+        msg: err
+      })
     });
 });
 
@@ -61,6 +81,31 @@ app.post('/add-user', (req, res) => {
     })
     .catch((err) => {
       console.log(err);
+      return res.status(400).send({
+        msg: err
+      })
+    });
+});
+
+app.post('/add-favorite', (req, res) => {
+  const {userId, movieId, movieTitle} = req.body;
+  console.log(req.body);
+
+  db('user_movies')
+    .insert({
+      user_id: userId,
+      movie_id: movieId,
+      movie_title: movieTitle,
+    })
+    .then(() => {
+      console.log('Favorite movie Added');
+      return res.json({msg: 'Favorite movie Added'});
+    })
+    .catch((err) => {
+      console.log(err);
+      return res.status(400).send({
+        msg: err
+      })
     });
 });
 
