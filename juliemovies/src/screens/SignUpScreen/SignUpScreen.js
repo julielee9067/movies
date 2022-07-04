@@ -5,14 +5,26 @@ import CustomButton from "../../components/CustomButton";
 import SocialSignInButtons from "../../components/SocialSignInButtons";
 import {useNavigation} from "@react-navigation/native";
 import {useForm} from "react-hook-form";
+import axios from "axios";
 
 const SignUpScreen = () => {
   const {control, handleSubmit, watch} = useForm();
   const pwd = watch('password');
   const navigation = useNavigation();
+  const signUpUrl = 'http://localhost:5000/add-user'
 
-  const onRegisterPressed = (data) => {
+  const onRegisterPressed = async (data) => {
     console.log(data);
+    try {
+      const response = await axios.post(signUpUrl, data);
+      if (response.status === 200) {
+        alert(`A user with username ${data.username} has been created`);
+      } else {
+        throw new Error('An error has occurred')
+      }
+    } catch (error) {
+      alert('An error has occurred');
+    }
     navigation.navigate('SignIn');
   }
 

@@ -1,21 +1,15 @@
 import React from 'react';
-import {
-  StyleSheet,
-  Text,
-  TextInput,
-  useWindowDimensions,
-  View,
-} from 'react-native';
-import { Controller } from 'react-hook-form';
+import {StyleSheet, Text, TextInput, useWindowDimensions, View,} from 'react-native';
+import {Controller} from 'react-hook-form';
 
 const CustomInput = ({
-  control,
-  name,
-  rules = {},
-  placeholder,
-  secureTextEntry,
-}) => {
-  const { height } = useWindowDimensions();
+                       control,
+                       name,
+                       rules = {},
+                       placeholder,
+                       secureTextEntry,
+                     }) => {
+  const {height} = useWindowDimensions();
 
   return (
     <Controller
@@ -23,27 +17,27 @@ const CustomInput = ({
       name={name}
       rules={rules}
       render={({
-        field: { value, onChange, onBlur },
-        fieldState: { error },
-      }) => (
+                 field: {value, onChange, onBlur},
+                 fieldState: {error},
+               }) => (
         <>
           <View
             style={[
               styles.container,
-              { borderColor: error ? 'red' : '#e8e8e8' },
+              {borderColor: error ? 'red' : '#e8e8e8'},
             ]}>
             <TextInput
               value={value}
               onChangeText={onChange}
               onBlur={onBlur}
               placeholder={placeholder}
-              style={[styles.input, { height: height * 0.05 }]}
+              style={[styles.input, {height: height * 0.05}]}
               secureTextEntry={secureTextEntry}
             />
           </View>
           {error && (
-            <Text style={{ color: 'red', alignSelf: 'stretch' }}>
-              {error.message} || 'Error'
+            <Text style={{color: 'red', alignSelf: 'stretch'}}>
+              {error.message || 'Error'}
             </Text>
           )}
         </>
