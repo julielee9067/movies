@@ -1,17 +1,13 @@
-import React, {useState} from "react";
+import React from "react";
 import {ScrollView, StyleSheet, Text, TouchableHighlight, View} from "react-native";
 import axios from "axios";
 
 const ActorListScreen = ({navigation, route}) => {
-  const [state, setState] = useState({
-    selected: {}
-  });
-
-  const openPopup = (id) => {
-    axios('https://api.themoviedb.org/3/movie/' + id + '?api_key=faaba85728afe12fc19258764ebfc04d').then(({data}) => {
-      let result = data;
-      setState(prevState => {
-        return {...prevState, selected: result}
+  const searchMovies = (id) => {
+    axios('https://api.themoviedb.org/3/person/' + id + '/movie_credits?api_key=faaba85728afe12fc19258764ebfc04d').then(({data}) => {
+      let results = data.cast;
+      navigation.navigate('MovieList', {
+        results: results,
       });
     });
   }
@@ -22,7 +18,7 @@ const ActorListScreen = ({navigation, route}) => {
         return (
           <TouchableHighlight
             key={result.id}
-            onPress={() => openPopup(result.id)}
+            onPress={() => searchMovies(result.id)}
           >
             <View style={styles.result}>
               <Text style={styles.heading}>{result.name}</Text>
