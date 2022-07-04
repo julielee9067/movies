@@ -6,20 +6,31 @@ import SocialSignInButtons from '../../components/SocialSignInButtons';
 import {useNavigation} from '@react-navigation/native';
 import {useForm} from 'react-hook-form';
 import CustomInput from '../../components/CustomInput';
+import axios from "axios";
 
 const SignInScreen = () => {
   const {height} = useWindowDimensions();
   const navigation = useNavigation();
-
+  const userUrl = 'http://localhost:5000/'
   const {
     control,
     handleSubmit,
     formState: {errors},
   } = useForm();
 
-  const onSignInPressed = (data) => {
+  const onSignInPressed = async (data) => {
     console.log(data);
-    navigation.navigate('Home');
+    try {
+      const response = await axios.get(`${userUrl}${data.username}/${data.password}/`);
+      console.log(response.data)
+      if (response.status === 200 && response.data.length === 1) {
+        navigation.navigate('Home');
+      } else {
+        throw new Error('Invalid username or password')
+      }
+    } catch (error) {
+      alert(`An error has occurred: ${error}`);
+    }
   };
 
   const onForgotPasswordPressed = () => {

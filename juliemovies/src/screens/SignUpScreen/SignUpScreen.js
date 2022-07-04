@@ -23,7 +23,7 @@ const SignUpScreen = () => {
         throw new Error('An error has occurred')
       }
     } catch (error) {
-      alert('An error has occurred');
+      alert(`An error has occurred: ${error}`);
     }
     navigation.navigate('SignIn');
   }
